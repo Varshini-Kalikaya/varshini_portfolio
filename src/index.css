@@ -1,0 +1,163 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ---- Light theme: warm paper, deep ink, violet accent ---- */
+:root {
+  --background: 45 30% 96%;
+  --foreground: 250 25% 10%;
+  --card: 0 0% 100%;
+  --card-foreground: 250 25% 10%;
+  --popover: 0 0% 100%;
+  --popover-foreground: 250 25% 10%;
+  --primary: 252 56% 52%;
+  --primary-foreground: 0 0% 100%;
+  --secondary: 250 25% 92%;
+  --secondary-foreground: 250 25% 12%;
+  --muted: 250 20% 93%;
+  --muted-foreground: 250 10% 40%;
+  --accent: 252 56% 52%;
+  --accent-foreground: 0 0% 100%;
+  --destructive: 0 72% 51%;
+  --destructive-foreground: 0 0% 98%;
+  --border: 250 18% 87%;
+  --input: 250 18% 87%;
+  --ring: 252 56% 52%;
+  --radius: 1rem;
+  --chart-1: 252 56% 52%;
+  --chart-2: 256 70% 70%;
+  --chart-3: 250 30% 60%;
+  --chart-4: 45 30% 60%;
+  --chart-5: 250 10% 40%;
+}
+
+/* ---- Night theme: near-black + lavender ---- */
+.dark {
+  --background: 252 30% 4%;
+  --foreground: 255 40% 94%;
+  --card: 252 22% 7%;
+  --card-foreground: 255 40% 94%;
+  --popover: 252 25% 8%;
+  --popover-foreground: 255 40% 94%;
+  --primary: 256 82% 78%;
+  --primary-foreground: 252 35% 8%;
+  --secondary: 252 18% 12%;
+  --secondary-foreground: 255 35% 90%;
+  --muted: 252 16% 11%;
+  --muted-foreground: 255 15% 64%;
+  --accent: 256 85% 80%;
+  --accent-foreground: 252 35% 8%;
+  --destructive: 0 62% 45%;
+  --destructive-foreground: 0 0% 98%;
+  --border: 252 15% 16%;
+  --input: 252 15% 16%;
+  --ring: 256 82% 78%;
+  --chart-1: 256 82% 78%;
+  --chart-2: 258 60% 60%;
+  --chart-3: 252 30% 50%;
+  --chart-4: 45 30% 55%;
+  --chart-5: 255 15% 64%;
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  html {
+    scroll-behavior: smooth;
+  }
+  body {
+    @apply bg-background text-foreground font-sans antialiased;
+    transition: background-color 0.45s ease, color 0.45s ease;
+  }
+  ::selection {
+    background: hsl(var(--primary));
+    color: hsl(var(--primary-foreground));
+  }
+  html.dark img {
+    filter: brightness(0.94);
+  }
+  ::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+  }
+  ::-webkit-scrollbar-track {
+    background: hsl(var(--background));
+  }
+  ::-webkit-scrollbar-thumb {
+    background: hsl(var(--border));
+    border-radius: 8px;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: hsl(var(--primary) / 0.5);
+  }
+}
+
+@layer utilities {
+  .eyebrow {
+    @apply font-mono text-[11px] uppercase tracking-[0.28em] text-muted-foreground;
+  }
+  .text-stroke {
+    -webkit-text-stroke: 2px hsl(var(--primary));
+    color: transparent;
+  }
+  .card-lift {
+    transition: transform 0.5s cubic-bezier(0.22, 1, 0.36, 1), border-color 0.3s ease, box-shadow 0.4s ease;
+  }
+  .card-lift:hover {
+    transform: translateY(-6px);
+    border-color: hsl(var(--primary) / 0.45);
+    box-shadow: 0 24px 60px -30px hsl(var(--primary) / 0.35);
+  }
+}
+
+/* film grain */
+.grain {
+  position: fixed;
+  inset: 0;
+  z-index: 5;
+  pointer-events: none;
+  opacity: 0.05;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E");
+}
+html.dark .grain {
+  opacity: 0.09;
+}
+
+/* slow editorial marquee */
+@keyframes marquee {
+  to {
+    transform: translateX(-50%);
+  }
+}
+.marquee-track {
+  display: flex;
+  width: max-content;
+  animation: marquee 44s linear infinite;
+}
+.marquee:hover .marquee-track {
+  animation-play-state: paused;
+}
+
+@keyframes floaty {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+.floaty {
+  animation: floaty 5s ease-in-out infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .marquee-track,
+  .floaty {
+    animation: none;
+  }
+  html {
+    scroll-behavior: auto;
+  }
+}
